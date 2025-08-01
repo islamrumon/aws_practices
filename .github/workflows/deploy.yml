@@ -1,9 +1,9 @@
-name: Deploy the test app to EC2 Instances
+name: Deploy main to EC2 Instances
 
 on:
   push:
     branches:
-      - devtest  # Trigger deploy on push to main
+      - main  # Trigger deploy on push to main
 
 jobs:
   deploy:
