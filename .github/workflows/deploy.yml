@@ -3,11 +3,11 @@ name: Deploy Laravel App to EC2
 on:
   push:
     branches:
-      - main  # Trigger deploy on push to main
+      - devtest  # Trigger deploy on push to main
 
 jobs:
   deploy:
-    name: Deploy to EC2 Instances
+    name: Deploy the test app to EC2 Instances
     runs-on: ubuntu-latest
 
     steps:
@@ -27,18 +27,18 @@ jobs:
     - name: Synchronize Files To Server
       uses: easingthemes/ssh-deploy@v2.1.5
       env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_TEST }}
         SOURCE: "."
-        REMOTE_HOST: ${{ secrets.VPS_HOST }}
-        REMOTE_USER: ${{ secrets.VPS_USER }}
+        REMOTE_HOST: ${{ secrets.VPS_HOST_TEST }}
+        REMOTE_USER: ${{ secrets.VPS_USER_TEST }}
         TARGET: "/var/www/html/myapp"
 
     - name: Run Remote/Artisan Commands
       uses: appleboy/ssh-action@v0.1.6
       with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        host: ${{ secrets.VPS_HOST_TEST }}
+        username: ${{ secrets.VPS_USER_TEST }}
+        key: ${{ secrets.SSH_PRIVATE_KEY_TEST }}
         script: |
             cd /var/www/html/myapp
             php artisan optimize
